@@ -4,104 +4,36 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>YOLO Object Detection</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-      body {
-        font-family: Arial, sans-serif;
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 20px;
-        background-color: #f5f5f5;
-      }
-      .container {
-        background: white;
-        padding: 30px;
-        border-radius: 10px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      }
-      h1 {
-        color: #333;
-        text-align: center;
-        margin-bottom: 30px;
-      }
-      .upload-section {
-        margin-bottom: 30px;
-        padding: 20px;
+      /* Optional: You can keep some custom styles if Tailwind doesn't directly support them or for very specific overrides. */
+      /* For example, if you want a custom dashed border style not easily expressible with default Tailwind */
+      .dashed-border {
         border: 2px dashed #ddd;
-        border-radius: 8px;
-        text-align: center;
-      }
-      .file-input {
-        margin: 10px 0;
-      }
-      input[type="file"] {
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        width: 300px;
-      }
-      button {
-        background-color: #007bff;
-        color: white;
-        padding: 12px 24px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 16px;
-        margin: 10px;
-      }
-      button:hover {
-        background-color: #0056b3;
-      }
-      .video-section {
-        margin-top: 30px;
-        text-align: center;
-      }
-      .video-container {
-        display: inline-block;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      }
-      .video-stream {
-        max-width: 100%;
-        height: auto;
-      }
-      .status {
-        margin: 20px 0;
-        padding: 15px;
-        border-radius: 4px;
-      }
-      .success {
-        background-color: #d4edda;
-        color: #155724;
-        border: 1px solid #c3e6cb;
-      }
-      .error {
-        background-color: #f8d7da;
-        color: #721c24;
-        border: 1px solid #f5c6cb;
-      }
-      .controls {
-        margin: 20px 0;
-      }
-      .info {
-        background-color: #d1ecf1;
-        color: #0c5460;
-        border: 1px solid #bee5eb;
-        padding: 15px;
-        border-radius: 4px;
-        margin: 20px 0;
       }
     </style>
   </head>
-  <body>
-    <div class="container">
-      <h1>🎯 YOLO Object Detection</h1>
+  <body class="font-sans max-w-6xl mx-auto p-5 bg-gray-100">
+    <div class="container bg-white p-8 rounded-lg shadow-lg">
+      <h1 class="text-4xl text-gray-800 text-center mb-8 font-bold">
+        🎯 YOLO Object Detection
+      </h1>
 
-      <div class="upload-section">
-        <h3>Upload Video File</h3>
-        <form method="post" enctype="multipart/form-data">
+      <div class="text-center mb-8">
+        <h2 class="text-2xl text-gray-700 mb-4 font-semibold">Kelompok 3</h2>
+        <ul class="list-none p-0 text-lg text-gray-600 space-y-2">
+          <li>Muhammad Nadi Brastalin</li>
+          <li>Rafiza Adlin Nabiha</li>
+          <li>Muhammad Ghaly Bintang Ramadhan</li>
+          <li>Syeddinul Faiz Caniggia</li>
+        </ul>
+      </div>
+
+      <div class="upload-section mb-8 p-6 dashed-border rounded-lg text-center">
+        <h3 class="text-2xl text-gray-700 mb-4 font-semibold">
+          Upload Video File
+        </h3>
+        <form method="post" enctype="multipart/form-data" class="space-y-4">
           <div class="file-input">
             <input
               type="file"
@@ -109,42 +41,60 @@
               id="fileInput"
               accept=".mp4,.avi,.mov,.mkv,.flv,.wmv"
               required
+              class="block w-full mx-auto p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 max-w-md"
             />
           </div>
-          <button type="submit">Upload & Process</button>
+          <button
+            type="submit"
+            class="bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-md text-lg transition duration-200 ease-in-out transform hover:scale-105"
+          >
+            Upload & Process
+          </button>
         </form>
       </div>
 
       <div id="status"></div>
 
       {% if video_path and success %}
-      <div class="video-section">
-        <h3>🔴 Live Object Detection Stream</h3>
-        <div class="info">
-          <strong>File:</strong> {{ video_path }}<br />
+      <div class="video-section mt-8 text-center">
+        <h3 class="text-3xl text-gray-800 mb-4 font-bold">
+          🔴 Live Object Detection Stream
+        </h3>
+        <div class="info bg-blue-100 text-blue-800 p-4 rounded-md mb-6">
+          <strong class="font-semibold">File:</strong> {{ video_path }}<br />
           The video is being processed in real-time with YOLO object detection.
         </div>
 
-        <div class="video-container">
+        <div
+          class="video-container inline-block border border-gray-300 rounded-lg overflow-hidden shadow-xl"
+        >
           <img
             src="{{ url_for('video_feed', video_filename=video_path) }}"
             alt="Video Stream"
-            class="video-stream"
+            class="max-w-full h-auto block"
           />
         </div>
 
-        <div class="controls">
-          <button onclick="processFullVideo('{{ video_path }}')">
+        <div class="controls mt-8 flex justify-center space-x-4">
+          <button
+            onclick="processFullVideo('{{ video_path }}')"
+            class="bg-green-600 hover:bg-green-700 text-white py-3 px-6 rounded-md text-lg transition duration-200 ease-in-out transform hover:scale-105"
+          >
             💾 Save Processed Video
           </button>
-          <button onclick="location.reload()">🔄 Upload New Video</button>
+          <button
+            onclick="location.reload()"
+            class="bg-purple-600 hover:bg-purple-700 text-white py-3 px-6 rounded-md text-lg transition duration-200 ease-in-out transform hover:scale-105"
+          >
+            🔄 Upload New Video
+          </button>
         </div>
       </div>
       {% endif %}
 
-      <div class="info">
-        <h4>📋 Instructions:</h4>
-        <ul style="text-align: left">
+      <div class="info bg-teal-100 text-teal-800 p-6 rounded-md mt-8">
+        <h4 class="text-xl font-bold mb-3">📋 Instructions:</h4>
+        <ul class="list-disc pl-5 text-left text-base space-y-2">
           <li>Select a video file (MP4, AVI, MOV, MKV, FLV, WMV)</li>
           <li>Click "Upload & Process" to start real-time detection</li>
           <li>
@@ -155,8 +105,8 @@
           </li>
         </ul>
 
-        <h4>🎯 Detectable Objects:</h4>
-        <p style="text-align: left; font-size: 14px">
+        <h4 class="text-xl font-bold mt-6 mb-3">🎯 Detectable Objects:</h4>
+        <p class="text-left text-sm leading-relaxed">
           Person, vehicles (car, bus, truck, motorcycle, bicycle), animals (cat,
           dog, bird, horse, etc.), household items (chair, table, TV, laptop,
           etc.), food items, and many more COCO dataset objects.
@@ -165,6 +115,19 @@
     </div>
 
     <script>
+      function showStatus(message, type) {
+        const statusDiv = document.getElementById("status");
+        let statusClass = "";
+        if (type === "success") {
+          statusClass = "bg-green-100 text-green-800 border border-green-300";
+        } else if (type === "error") {
+          statusClass = "bg-red-100 text-red-800 border border-red-300";
+        } else if (type === "info") {
+          statusClass = "bg-blue-100 text-blue-800 border border-blue-300";
+        }
+        statusDiv.innerHTML = `<div class="status ${statusClass} mt-4 p-4 rounded-md">${message}</div>`;
+      }
+
       function processFullVideo(filename) {
         showStatus("Processing full video... This may take a while.", "info");
 
@@ -175,7 +138,7 @@
               showStatus(
                 'Video processed successfully! <a href="/download/' +
                   data.output_file +
-                  '">Download here</a>',
+                  '" class="text-blue-700 underline hover:text-blue-900">Download here</a>',
                 "success",
               );
             } else {
@@ -190,12 +153,6 @@
           });
       }
 
-      function showStatus(message, type) {
-        const statusDiv = document.getElementById("status");
-        statusDiv.innerHTML =
-          '<div class="status ' + type + '">' + message + "</div>";
-      }
-
       // File input validation
       document
         .getElementById("fileInput")
@@ -208,6 +165,9 @@
                 "Warning: Large files may take a long time to process.",
                 "info",
               );
+            } else {
+              // Clear previous status if file is within limit
+              document.getElementById("status").innerHTML = "";
             }
           }
         });
